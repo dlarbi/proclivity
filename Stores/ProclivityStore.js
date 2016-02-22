@@ -14,7 +14,7 @@ var _view = 'Dashboard';
 var _entries = [];
 var _patterns = [];
 var _calendarDate = {
-  fullDate: moment(Date.now()).format('dddd MMMM DD, YYYY'),
+  fullDate: moment(Date.now()).format('dddd, MMMM DD, YYYY'),
   dayOfWeek: moment(Date.now()).format('dddd'),
   dayDigit: moment(Date.now()).format('DD'),
   month: moment(Date.now()).format('MMMM'),
@@ -88,7 +88,7 @@ function deletePatternEntry(patternName) {
 
 function setCalendarDate(date) {
   _calendarDate = {
-    fullDate: moment(date).format('dddd MMMM DD, YYYY'),
+    fullDate: moment(date).format('dddd, MMMM DD, YYYY'),
     dayOfWeek: moment(date).format('dddd'),
     dayDigit: moment(date).format('DD'),
     month: moment(date).format('MMMM'),
@@ -107,12 +107,54 @@ var ProclivityStore = assign({}, EventEmitter.prototype, {
     return _entries;
   },
 
+  getEntriesCurrentDay: function() {
+    var result = [];
+    _entries.forEach(function(entry, index, entries) {
+      if(entry.EntryDate == _calendarDate.fullDate) {
+        result.push(entry);
+      };
+    })
+    return result;
+  },
+
   getPatterns: function() {
     return _patterns;
   },
 
   getCalendarDate: function() {
     return _calendarDate;
+  },
+
+  getDayByDayEntryDataByPattern: function(patternName) {
+    var result = [];
+    var entries = [];
+    for(var i=0;i<_entries.length;i++) {
+      if(_entries[i].EntryName == patternName) {
+        entries.push(_entries[i]);
+      }
+    }
+    entries.sort(function(a, b) {
+      var keyA = new Date(a.EntryDate),
+          keyB = new Date(b.EntryDate);
+      // Compare the 2 dates
+      if(keyA < keyB) return -1;
+      if(keyA > keyB) return 1;
+      return 0;
+    });
+    for(var i=0;i<entries.length;i++) {
+      if(entries[i-1]) {
+        var dayDigit = moment(entries[i].EntryDate).format('DD');
+        var dayDigitPrev = moment(entries[i-1].EntryDate).format('DD');
+        if((dayDigit - dayDigitPrev) > 1) {
+          while((dayDigit - dayDigitPrev) > 1) {
+            result.push(0)
+            dayDigitPrev++
+          }
+        }
+      }
+      result.push(entries[i].EntryValue);
+    }
+    return result;
   },
 
   emitChange: function() {
@@ -177,6 +219,11 @@ var ProclivityStore = assign({}, EventEmitter.prototype, {
         break;
       case ProclivityConstants.SET_CALENDAR_DATE:
         setCalendarDate(payload.date);
+        ProclivityStore.emitChange();
+        break;
+      case ProclivityConstants.CHANGE_DAYS_BY:
+        var newDate = moment(_calendarDate.fullDate).subtract(payload.days, 'day');
+        setCalendarDate(newDate);
         ProclivityStore.emitChange();
         break;
     }

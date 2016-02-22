@@ -19,6 +19,7 @@ var { Icon } = require('react-native-icons');
 var ProclivityActions = require('../Actions/ProclivityActions');
 var ProclivityStore = require('../Stores/ProclivityStore');
 var ActivityCategoryBlock = require('./ActivityCategoryBlock');
+var moment = require('moment');
 
 var ActivityGrid = React.createClass({
 
@@ -107,13 +108,21 @@ var ActivityGrid = React.createClass({
           <TextInput style={styles.filterActivitiesInput}
             onChangeText={(text) => this.setState({activitiesFilter: text})}
             value={this.state.activitiesFilter}
-            placeholder="Activities Today" />
+            placeholder="Activities" />
           <Icon
             name='fontawesome|search'
             size={25}
             color='#40EFD4'
             style={styles.searchIconStyle}
           />
+          <TouchableWithoutFeedback onPress={this.props.openCreateEntryModal}>
+              <Icon
+                name='fontawesome|plus'
+                size={20}
+                color='#fff'
+                style={styles.addEntryButton}
+              />
+          </TouchableWithoutFeedback>
         </View>
         {activityCategoryBlocks}
       </View>
@@ -122,7 +131,7 @@ var ActivityGrid = React.createClass({
 });
 
 const styles = StyleSheet.create({
-  activityGridWrapper: {flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start', marginTop:15},
+  activityGridWrapper: {flexDirection:'row', flexWrap:'wrap', justifyContent:'flex-start'},
   activityBox: { width:Dimensions.get('window').width, padding:0,paddingLeft:15, paddingRight:15, backgroundColor:'#fff'},
   activityBoxHeader: { width:Dimensions.get('window').width, padding:0,paddingLeft:15, paddingRight:15,
                         backgroundColor:'#efefef'},
@@ -130,7 +139,9 @@ const styles = StyleSheet.create({
   deleteEntryButton: {width:25, height:25, position:'absolute', right:0, top:0},
   filterActivitiesInput: {width:Dimensions.get('window').width, padding:15, paddingLeft:50, height:65, backgroundColor:'#fff'},
   entryHeader: {},
-  searchIconStyle: {width:25, height:25, position:'absolute', left:15, top:20}
+  searchIconStyle: {width:25, height:25, position:'absolute', left:15, top:20},
+  addEntryButton: {height:40, width:40, borderRadius:20, position:'absolute', right:15, top:15,  backgroundColor:'#66DE59'},
+
 });
 
 module.exports = ActivityGrid;

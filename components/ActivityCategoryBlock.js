@@ -16,8 +16,7 @@ var ProclivityStore = require('../Stores/ProclivityStore');
 
 var ActivityCategoryBlock = React.createClass({
   createEntryFromPattern: function(pattern) {
-    console.log('CLOCK', pattern.PatternName, pattern.PatternType, 1, 'Hours', this.props.calendarDate)
-    ProclivityActions.createEntry(pattern.PatternName, pattern.PatternType, 1, 'Hours');
+    ProclivityActions.createEntry(pattern.PatternName, pattern.PatternType, 1, 'Hours', this.props.calendarDate);
     ProclivityActions.addEntryToPattern(pattern.PatternName, pattern.PatternType)
   },
 

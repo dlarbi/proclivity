@@ -57,25 +57,15 @@ var ProclivityActions = {
     });
 
   },
-  createEntry: function(EntryName, EntryType, EntryValue, EntryUnit) {
+  createEntry: function(EntryName, EntryType, EntryValue, EntryUnit, calendarDate) {
 
     var db = SQLite.openDatabase("proclivity.db", "1.0", "Test Database", 200000, openCB, errorCB);
     var entryId = (Math.floor(Math.random() * (100000 - 0)) + 0);
-
+    var entryCreated = Date.now();
     db.transaction(function(tx) {
 
-      tx.executeSql('INSERT INTO Entry( EntryID , EntryName, EntryType, EntryValue, EntryUnit ) values('+entryId+', "'+EntryName+'", "'+EntryType+'", '+EntryValue+', "'+EntryUnit+'")', [], function(tx, results) {
-        var entry = {
-          EntryID: entryId,
-          EntryName: EntryName,
-          EntryType: EntryType,
-          EntryValue: EntryValue,
-          EntryUnit: EntryUnit
-        }
-        AppDispatcher.dispatch({
-          actionType: ProclivityConstants.CREATE_ENTRY,
-          entry: entry
-        });
+      tx.executeSql('INSERT INTO Entry( EntryID , EntryName, EntryType, EntryValue, EntryUnit, EntryDate, EntryCreated ) values('+entryId+', "'+EntryName+'", "'+EntryType+'", '+EntryValue+', "'+EntryUnit+'", "'+calendarDate.fullDate+'","'+entryCreated+'")', [], function(tx, results) {
+        ProclivityActions.getEntries();
       });
     }, function(error) {
       // OK to close here:
@@ -278,6 +268,12 @@ var ProclivityActions = {
     AppDispatcher.dispatch({
       actionType: ProclivityConstants.SET_CALENDAR_DATE,
       date: date
+    });
+  },
+  changeDaysBy: function(int) {
+    AppDispatcher.dispatch({
+      actionType: ProclivityConstants.CHANGE_DAYS_BY,
+      days: int
     });
   }
 }

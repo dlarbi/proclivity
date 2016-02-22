@@ -10,6 +10,7 @@ import React, {
   Dimensions,
   ScrollView
 } from 'react-native'
+var moment = require('moment');
 
 const tooltipWidth = 100
 var barWidth = 15
@@ -121,9 +122,19 @@ class PlayerTrendBarItem extends Component {
 }
 
 var BarChart = React.createClass({
+  sortEntries: function() {
+    this.props.entries.sort(function(a, b) {
+      var keyA = new Date(a.EntryDate),
+          keyB = new Date(b.EntryDate);
+      // Compare the 2 dates
+      if(keyA < keyB) return -1;
+      if(keyA > keyB) return 1;
+      return 0;
+    })
+  },
   high: 1,
   render: function() {
-    console.log('BAR CHART ENTRIES', this.props.entries)
+    this.sortEntries()
     var trendBarItems = [];
 
     for(var i=0;i<this.props.entries.length;i++) {
@@ -131,11 +142,27 @@ var BarChart = React.createClass({
         this.high = this.props.entries[i].EntryValue;
       }
     }
+    var unitHeight = 80/this.high
     for(var i=0;i<this.props.entries.length;i++) {
+      if(this.props.entries[i-1]) {
+        var dayDigit = moment(this.props.entries[i].EntryDate).format('DD');
+        var dayDigitPrev = moment(this.props.entries[i-1].EntryDate).format('DD');
+        if((dayDigit - dayDigitPrev) > 1) {
+          while((dayDigit - dayDigitPrev) > 1) {
+            trendBarItems.push(
+              <PlayerTrendBarItem width={7} value={0} high={this.high} low={0} color={'#40EFD4'} unitHeight={unitHeight} date={'01011990'} barInterval={1} barItemTop={18} />
+            )
+            dayDigitPrev++
+          }
+        }
+      }
+
+
       trendBarItems.push(
-        <PlayerTrendBarItem width={this.props.width/this.props.entries.length} key={i} value={this.props.entries[i].EntryValue} high={this.high} low={0} color={'#40EFD4'} unitHeight={5} date={'01011990'} barInterval={1} barItemTop={18} />
+        <PlayerTrendBarItem width={7} key={i} value={this.props.entries[i].EntryValue} high={this.high} low={0} color={'#40EFD4'} unitHeight={unitHeight} date={'01011990'} barInterval={1} barItemTop={18} />
       )
     }
+    console.log(40/this.high)
     return (
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {trendBarItems}

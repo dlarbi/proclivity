@@ -30,6 +30,7 @@ var Proclivity = React.createClass({
     return {
       view: ProclivityStore.getView(),
       entries: ProclivityStore.getEntries(),
+      entriesCurrentDay: ProclivityStore.getEntriesCurrentDay(),
       patterns: ProclivityStore.getPatterns(),
       calendarDate: ProclivityStore.getCalendarDate()
     }
@@ -45,6 +46,8 @@ var Proclivity = React.createClass({
     this.setState({
       view: ProclivityStore.getView(),
       entries: ProclivityStore.getEntries(),
+      entriesCurrentDay: ProclivityStore.getEntriesCurrentDay(),
+
       patterns: ProclivityStore.getPatterns(),
       calendarDate: ProclivityStore.getCalendarDate()
     });
@@ -68,12 +71,14 @@ var Proclivity = React.createClass({
   },
 
   render:function() {
+    console.log(this.state)
+
     var view = this.state.view == 'Dashboard' ?
-                <Dashboard entries={this.state.entries}
+                <Dashboard entries={this.state.entriesCurrentDay}
                             patterns={this.state.patterns}
                             calendarDate={this.state.calendarDate}/> : this.state.view == 'Patterns' ?
                 <Patterns patterns={this.state.patterns} entries={this.state.entries}/> : this.state.view == 'Connections' ?
-                <Connections /> : this.state.view == 'Account' ?
+                <Connections patterns={this.state.patterns} entries={this.state.entries}/> : this.state.view == 'Account' ?
                 <Account /> :
                  null;
 
@@ -163,7 +168,7 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
 
-  bottomNavMenu: {flexDirection:'row', flex:1, left:0, right:0, position:'absolute', bottom:0, backgroundColor:'#333'},
+  bottomNavMenu: {flexDirection:'row', flex:1, left:0, right:0, position:'absolute', bottom:0, backgroundColor:'#1F3233'},
   navButton: {flex:1, padding:15},
   navButtonText: { textAlign:'center',color:'#fff',marginTop:5}
 });

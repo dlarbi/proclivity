@@ -39,7 +39,7 @@ var Dashboard = React.createClass({
 
   },
   createEntry: function() {
-    ProclivityActions.createEntry(this.state.createEntryName, "negative", parseInt(this.state.createEntryValue), this.state.createEntryUnit);
+    ProclivityActions.createEntry(this.state.createEntryName, "negative", parseInt(this.state.createEntryValue), this.state.createEntryUnit, this.props.calendarDate);
     ProclivityActions.addEntryToPattern(this.state.createEntryName, "negative");
     this.refs.createEntryModal.close()
   },
@@ -52,8 +52,11 @@ var Dashboard = React.createClass({
   closeCreateEntryModal: function() {
     this.refs.createEntryModal.close()
   },
+  changeDaysBy: function(int) {
+    ProclivityActions.changeDaysBy(int);
+  },
+
   render: function() {
-    console.log(this.state)
     return (
       <View>
         <View style={styles.welcome} onPress={ProclivityActions.initialize}>
@@ -75,17 +78,32 @@ var Dashboard = React.createClass({
               {this.props.entries.length} things you did
             </Text>
           </View>
-          <TouchableWithoutFeedback onPress={this.openCreateEntryModal}>
+
+        </View>
+
+
+        <View style={styles.dateSelectorWrapper}>
+          <TouchableWithoutFeedback onPress={this.changeDaysBy.bind(this, 1)}>
               <Icon
-                name='fontawesome|plus'
-                size={20}
-                color='#fff'
-                style={styles.addEntryButton}
+                name='fontawesome|caret-left'
+                size={25}
+                color='#999'
+                style={{width:25,height:25, position:'absolute', left:0,top:10}}
+              />
+          </TouchableWithoutFeedback>
+          <Text>{this.props.calendarDate.fullDate}</Text>
+          <TouchableWithoutFeedback onPress={this.changeDaysBy.bind(this, -1)}>
+              <Icon
+                name='fontawesome|caret-right'
+                size={25}
+                color='#999'
+                style={{width:25,height:25, position:'absolute', right:0, top:10}}
               />
           </TouchableWithoutFeedback>
         </View>
 
-        <ActivityGrid entries={this.props.entries} patterns={this.props.patterns} calendarDate={this.props.calendarDate}/>
+
+        <ActivityGrid openCreateEntryModal={this.openCreateEntryModal} entries={this.props.entries} patterns={this.props.patterns} calendarDate={this.props.calendarDate}/>
 
         <Modal ref="createEntryModal" style={[styles.modal, styles.createEntryModal]} swipeToClose={true} swipeThreshold={10}>
           <View style={{flexDirection:'column'}} >
@@ -142,7 +160,7 @@ const styles = StyleSheet.create({
 
   welcome: {
     padding:15,
-    backgroundColor: '#333',
+    backgroundColor: '#1F3233',
     shadowColor: "#000000",
     shadowOpacity: 0.8,
     shadowRadius: 2,
@@ -157,7 +175,6 @@ const styles = StyleSheet.create({
   imageAndSummaryWrapper: {flexDirection:'row', padding:15, paddingBottom:0},
   profileSummaryHeader: {fontSize:18},
   profileSummarySubHeader: {fontSize:16, color:'#bbb'},
-  addEntryButton: {height:40, width:40, borderRadius:20, marginRight:15, backgroundColor:'#66DE59'},
   createEntryModalSubmitButton: {height:40, width:40, borderRadius:20, marginRight:15, backgroundColor:'#66DE59', alignSelf:'flex-end'},
   createEntryModal: {},
   modal: {
@@ -177,8 +194,8 @@ const styles = StyleSheet.create({
     marginBottom:10
   },
   createEntryInputLabel: {marginLeft:15, fontSize:16},
-  createEntryInputSubLabel: {marginLeft:15, fontSize:12, color:'#ccc', marginBottom:10, width: Dimensions.get('window').width-30}
-
+  createEntryInputSubLabel: {marginLeft:15, fontSize:12, color:'#ccc', marginBottom:10, width: Dimensions.get('window').width-30},
+  dateSelectorWrapper: {backgroundColor:'#fff', flexDirection:'row', padding:15, borderBottomColor:'#eee', borderBottomWidth:1, marginTop:15, justifyContent:'center'}
 });
 
 module.exports = Dashboard;

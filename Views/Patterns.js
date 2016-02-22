@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 
   welcome: {
     padding:15,
-    backgroundColor: '#333',
+    backgroundColor: '#1F3233',
   },
   welcomeHeader: {fontSize:18, color:'#fff', alignSelf:'stretch'},
   welcomeBlurb: {fontSize:14, color:'#fff',lineHeight:20,  alignSelf:'stretch'},
