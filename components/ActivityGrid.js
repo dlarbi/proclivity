@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   filterActivitiesInput: {width:Dimensions.get('window').width, padding:15, paddingLeft:50, height:65, backgroundColor:'#fff'},
   entryHeader: {},
   searchIconStyle: {width:25, height:25, position:'absolute', left:15, top:20},
-  addEntryButton: {height:40, width:40, borderRadius:20, position:'absolute', right:15, top:15,  backgroundColor:'#66DE59'},
+  addEntryButton: {height:40, width:40, borderRadius:20, position:'absolute', right:15, top:15,  backgroundColor:'#40EFD4',},
 
 });
 

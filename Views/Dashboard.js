@@ -57,30 +57,33 @@ var Dashboard = React.createClass({
   },
 
   render: function() {
+
+    /*
+    <View style={styles.welcome} onPress={ProclivityActions.initialize}>
+      <Text style={styles.welcomeHeader}>Track yourself.</Text>
+      <Text style={styles.welcomeBlurb}>Help Proclivity find connections between habits.</Text>
+    </View>
+    <View style={styles.imageAndSummaryWrapper}>
+      <View style={{marginRight:20}}>
+        <Avatar width={40} height={40} source={{uri: "http://www.sheffield.com/wp-content/uploads/2013/06/placeholder.png"}}/>
+      </View>
+      <View style={styles.profileSummaryWrapper}>
+        <Text style={styles.profileSummaryHeader}>
+          krelwani
+        </Text>
+        <Text style={styles.profileSummarySubHeader}>
+          {this.props.entries.length} things you did
+        </Text>
+      </View>
+    </View>
+    */
     return (
       <View>
-        <View style={styles.welcome} onPress={ProclivityActions.initialize}>
-          <Text style={styles.welcomeHeader}>Track yourself.</Text>
-          <Text style={styles.welcomeBlurb}>Help Proclivity find connections between habits.</Text>
-        </View>
+
+
+
 
         <Question />
-
-        <View style={styles.imageAndSummaryWrapper}>
-          <View style={{marginRight:20}}>
-            <Avatar width={70} height={70} source={{uri: "http://www.sheffield.com/wp-content/uploads/2013/06/placeholder.png"}}/>
-          </View>
-          <View style={styles.profileSummaryWrapper}>
-            <Text style={styles.profileSummaryHeader}>
-              krelwani
-            </Text>
-            <Text style={styles.profileSummarySubHeader}>
-              {this.props.entries.length} things you did
-            </Text>
-          </View>
-
-        </View>
-
 
         <View style={styles.dateSelectorWrapper}>
           <TouchableWithoutFeedback onPress={this.changeDaysBy.bind(this, 1)}>
@@ -161,20 +164,14 @@ const styles = StyleSheet.create({
   welcome: {
     padding:15,
     backgroundColor: '#1F3233',
-    shadowColor: "#000000",
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    shadowOffset: {
-      height: 1,
-      width: 0
-    }
+
   },
   welcomeHeader: {fontSize:18, color:'#fff', alignSelf:'stretch'},
   welcomeBlurb: {fontSize:14, color:'#fff',lineHeight:20,  alignSelf:'stretch'},
   profileSummaryWrapper: {width:50, flex:1},
-  imageAndSummaryWrapper: {flexDirection:'row', padding:15, paddingBottom:0},
-  profileSummaryHeader: {fontSize:18},
-  profileSummarySubHeader: {fontSize:16, color:'#bbb'},
+  imageAndSummaryWrapper: {flexDirection:'row', padding:15},
+  profileSummaryHeader: {fontSize:14},
+  profileSummarySubHeader: {fontSize:12, color:'#bbb'},
   createEntryModalSubmitButton: {height:40, width:40, borderRadius:20, marginRight:15, backgroundColor:'#66DE59', alignSelf:'flex-end'},
   createEntryModal: {},
   modal: {

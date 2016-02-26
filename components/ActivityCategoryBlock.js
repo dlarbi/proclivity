@@ -30,7 +30,7 @@ var ActivityCategoryBlock = React.createClass({
               <Icon
                 name='fontawesome|plus'
                 size={25}
-                color='#7FE26D'
+                color='#bbb'
                 style={styles.deleteEntryButton}
               />
             </TouchableWithoutFeedback>

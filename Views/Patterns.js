@@ -26,14 +26,15 @@ var Patterns = React.createClass({
 
   },
   render: function() {
+    /*
+    <View style={styles.welcome} onPress={ProclivityActions.initialize}>
+      <Text style={styles.welcomeHeader}>Patterns</Text>
+      <Text style={styles.welcomeBlurb}>See details about your habits.</Text>
+    </View>
+    */
     return (
       <View>
-        <View style={styles.welcome} onPress={ProclivityActions.initialize}>
-          <Text style={styles.welcomeHeader}>Patterns</Text>
-          <Text style={styles.welcomeBlurb}>See details about your habits.</Text>
 
-
-        </View>
         <PatternList patterns={this.props.patterns} entries={this.props.entries}/>
       </View>
     )

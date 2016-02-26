@@ -142,17 +142,31 @@ var ProclivityStore = assign({}, EventEmitter.prototype, {
       return 0;
     });
     for(var i=0;i<entries.length;i++) {
-      if(entries[i-1]) {
+      var entryDate = entries[i].EntryDate;
+
+      if(i > 0) {
         var dayDigit = moment(entries[i].EntryDate).format('DD');
         var dayDigitPrev = moment(entries[i-1].EntryDate).format('DD');
+        var entryDatePrev = entries[i-1].EntryDate;
+
         if((dayDigit - dayDigitPrev) > 1) {
           while((dayDigit - dayDigitPrev) > 1) {
-            result.push(0)
+            result.push(
+              {
+                EntryValue: 0,
+                EntryDate: entryDatePrev
+              }
+            )
             dayDigitPrev++
           }
         }
       }
-      result.push(entries[i].EntryValue);
+      result.push(
+        {
+          EntryValue: entries[i].EntryValue,
+          EntryDate: entryDate
+        }
+      );
     }
     return result;
   },
