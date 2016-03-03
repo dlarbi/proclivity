@@ -120,12 +120,6 @@ var Dashboard = React.createClass({
               value={this.state.createEntryName}
               placeholder="(i.e. Sleeping, Smoking, Driving..)"/>
 
-            <Text style={styles.createEntryInputLabel}>How Much?</Text>
-            <Text style={styles.createEntryInputSubLabel}>How much did you do?  For Example, 10 hours of sleep. 2 cigarettes.</Text>
-            <TextInput style={styles.createEntryInput}
-              onChangeText={(text) => this.setState({createEntryValue: text})}
-              value={this.state.createEntryValue}
-              placeholder="(i.e. 2, 3, 5, 8, 13)"/>
 
             <Text style={styles.createEntryInputLabel}>Of What?</Text>
             <Text style={styles.createEntryInputSubLabel}>For Example, 10 hours of sleep. 2 cigarettes.</Text>

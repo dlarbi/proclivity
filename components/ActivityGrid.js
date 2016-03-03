@@ -25,13 +25,15 @@ var ActivityGrid = React.createClass({
 
   getInitialState: function() {
     return {
-      activitiesFilter: ''
+      activitiesFilter: '',
+      expandedActivities: [] // these are list items that the user has expanded
     }
   },
 
   deleteEntry: function(EntryID, EntryName) {
     ProclivityActions.deleteEntry(EntryID);
     ProclivityActions.deletePatternEntry(EntryName);
+    this.collapseActivity(EntryName);
   },
 
   increaseEntryValue: function(EntryID) {
@@ -40,6 +42,29 @@ var ActivityGrid = React.createClass({
 
   decreaseEntryValue: function(EntryID) {
     ProclivityActions.decreaseEntryValue(EntryID);
+  },
+
+  toggleActivity: function(patternName) {
+    var idx = this.state.expandedActivities.indexOf(patternName);
+
+    if(idx == -1) {
+      this.state.expandedActivities.push(patternName);
+    } else {
+      this.state.expandedActivities.splice(idx, 1);
+    }
+
+    this.setState({
+      expandedActivities: this.state.expandedActivities
+    });
+  },
+
+  collapseActivity: function(Name) {
+    var idx = this.state.expandedActivities.indexOf(Name);
+    this.state.expandedActivities.splice(idx, 1);
+
+    this.setState({
+      expandedActivities: this.state.expandedActivities
+    });
   },
 
   render: function() {
@@ -90,8 +115,20 @@ var ActivityGrid = React.createClass({
               </View>)
             } //end if
           } //end for i
-          var activityCategoryBlock = <ActivityCategoryBlock pattern={this.props.patterns[j]} calendarDate={this.props.calendarDate} key={j}>
-                                        {activityList}
+          var expanded = this.state.expandedActivities.indexOf(this.props.patterns[j].PatternName);
+          var activityCategoryBlock = <ActivityCategoryBlock pattern={this.props.patterns[j]} calendarDate={this.props.calendarDate} key={j}
+                                        expanded={expanded}
+                                        hasEntries={activityList.length}
+                                        toggleActivity={this.toggleActivity}>
+
+                                        {expanded > -1 ?
+                                          <View>
+                                            {activityList}
+                                          </View>
+                                        :
+                                          null
+                                        }
+
                                       </ActivityCategoryBlock>
 
           activityCategoryBlocks.push(activityCategoryBlock);

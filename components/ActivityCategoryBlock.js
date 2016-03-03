@@ -15,12 +15,18 @@ var ProclivityActions = require('../Actions/ProclivityActions');
 var ProclivityStore = require('../Stores/ProclivityStore');
 
 var ActivityCategoryBlock = React.createClass({
+
   createEntryFromPattern: function(pattern) {
-    ProclivityActions.createEntry(pattern.PatternName, pattern.PatternType, 1, 'Hours', this.props.calendarDate);
-    ProclivityActions.addEntryToPattern(pattern.PatternName, pattern.PatternType)
+    if(!this.props.hasEntries) {
+      ProclivityActions.createEntry(pattern.PatternName, pattern.PatternType, 1, 'Hours', this.props.calendarDate);
+      ProclivityActions.addEntryToPattern(pattern.PatternName, pattern.PatternType);
+    }
+
+    this.props.toggleActivity(pattern.PatternName);
   },
 
   render: function() {
+    var glyphiconType = !this.props.hasEntries ? 'plus' : this.props.expanded > -1 ? 'chevron-down' : 'chevron-right'
     return (
       <View style={styles.activityBox}>
         <View>
@@ -28,7 +34,7 @@ var ActivityCategoryBlock = React.createClass({
             <Text style={styles.entryHeader}>{this.props.pattern.PatternName}</Text>
             <TouchableWithoutFeedback style={{width:25, height:25, position:'absolute', right:15}} onPress={this.createEntryFromPattern.bind(this, this.props.pattern)}>
               <Icon
-                name='fontawesome|plus'
+                name={'fontawesome|' + glyphiconType}
                 size={25}
                 color='#bbb'
                 style={styles.deleteEntryButton}

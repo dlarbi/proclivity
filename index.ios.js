@@ -14,7 +14,6 @@ import React, {
   TouchableWithoutFeedback
 } from 'react-native';
 
-var SQLite = require('react-native-sqlite-storage');
 
 var { Icon } = require('react-native-icons');
 var ProclivityActions = require('../ProclivityApp/Actions/ProclivityActions');
@@ -56,19 +55,7 @@ var Proclivity = React.createClass({
   navButtonPress: function(data) {
     ProclivityActions.setView(data);
   },
-  resetDb: function() {
-    var db = SQLite.openDatabase("proclivity.db", "1.0", "Test Database", 200000, null, null);
-    db.transaction(function(tx) {
-      tx.executeSql('DELETE from Patterns', [], function(tx, results) {
 
-      });
-    });
-    db.transaction(function(tx) {
-      tx.executeSql('DELETE from Entry', [], function(tx, results) {
-
-      });
-    });
-  },
 
   render:function() {
     console.log(this.state)
@@ -87,14 +74,14 @@ var Proclivity = React.createClass({
 
         <View style={styles.topBar}>
           <Image style={{width:128, height:40, marginTop:25}} source={{uri: "http://i.imgur.com/o5jdB4D.png"}}></Image>
-            <TouchableWithoutFeedback onPress={this.resetDb}>
+          <TouchableWithoutFeedback onPress={this.navButtonPress.bind(this, 'Account')}>
               <Icon
-                name='fontawesome|remove'
-                size={30}
-                color='#f00'
-                style={{width:30, height:30, alignSelf:'flex-end'}}
+                name='fontawesome|gear'
+                size={40}
+                color='#999'
+                style={{width:40,height:40, position:'absolute', right:15,top:20}}
               />
-            </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
         </View>
 
         <ScrollView style={{marginBottom:60}}
