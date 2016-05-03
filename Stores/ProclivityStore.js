@@ -143,7 +143,8 @@ var ProclivityStore = assign({}, EventEmitter.prototype, {
     });
     for(var i=0;i<entries.length;i++) {
       var entryDate = entries[i].EntryDate;
-
+      var nextEntryDate = typeof entries[i+1] != "undefined" ? entries[i+1].EntryDate : null;
+      console.log(entryDate, 'entry date')
       if(i > 0) {
         var dayDigit = moment(entries[i].EntryDate).format('DD');
         var dayDigitPrev = moment(entries[i-1].EntryDate).format('DD');

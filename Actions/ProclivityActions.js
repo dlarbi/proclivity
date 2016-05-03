@@ -30,6 +30,41 @@ var ProclivityActions = {
       view: view
     });
   },
+  createTables: function() {
+    var db = SQLite.openDatabase("proclivity.db", "1.0", "Test Database", 200000, openCB, errorCB);
+    var entryId = (Math.floor(Math.random() * (100000 - 0)) + 0);
+    var entryCreated = Date.now();
+    db.transaction(function(tx) {
+
+      tx.executeSql('CREATE TABLE IF NOT EXISTS Entry( EntryID int, EntryName varchar(45), EntryType varchar(45), EntryValue real, EntryUnit varchar(25), EntryDate varchar(65), EntryCreated DATETIME DEFAULT CURRENT_TIMESTAMP )', [], function(tx, results) {
+      });
+    }, function(error) {
+      // OK to close here:
+      console.log('transaction error: ' + error.message);
+      //db.close();
+    }, function() {
+      // OK to close here:
+      console.log('transaction ok');
+      //db.close(function() {
+        console.log('database is closed ok');
+      //});
+    });
+    db.transaction(function(tx) {
+
+      tx.executeSql('CREATE TABLE IF NOT EXISTS Patterns( PatternID int, PatternName varchar(45), PatternType varchar(45), EntryCount int)', [], function(tx, results) {
+      });
+    }, function(error) {
+      // OK to close here:
+      console.log('transaction error: ' + error.message);
+      //db.close();
+    }, function() {
+      // OK to close here:
+      console.log('transaction ok');
+      //db.close(function() {
+        console.log('database is closed ok');
+      //});
+    });
+  },
   getEntries: function() {
     var db = SQLite.openDatabase("proclivity.db", "1.0", "Test Database", 200000, openCB, errorCB);
     db.transaction(function(tx) {
